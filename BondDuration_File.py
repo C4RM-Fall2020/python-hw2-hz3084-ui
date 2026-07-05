@@ -2,22 +2,19 @@ import numpy as np
 
 def getBondDuration(y, face, couponRate, m, ppy=1):
 
+    n = m * ppy
+
+    t = np.arange(1, n + 1)
+
     coupon = face * couponRate / ppy
-    bondPrice = 0
-    weightedPV = 0
 
-    for t in range(1, m * ppy + 1):
+    cashflows = np.full(n, coupon)
+    cashflows[-1] = cashflows[-1] + face
 
-        cf = coupon
+    pv = cashflows / (1 + y / ppy) ** t
 
-        if t == m * ppy:
-            cf += face
+    times = t / ppy
 
-        pv = cf / (1 + y / ppy) ** t
-
-        bondPrice += pv
-        weightedPV += (t / ppy) * pv
-
-    bondDuration = weightedPV / bondPrice
+    bondDuration = np.sum(times * pv) / np.sum(pv)
 
     return bondDuration
