@@ -2,20 +2,13 @@ import numpy as np
 
 def FizzBuzz(start, finish):
 
-    outlist = []
+    nums = np.arange(start, finish + 1, dtype=object)
 
-    for i in range(start, finish + 1):
+    fizz = (nums.astype(int) % 3 == 0)
+    buzz = (nums.astype(int) % 5 == 0)
 
-        if i % 15 == 0:
-            outlist.append("fizzbuzz")
+    nums[fizz & ~buzz] = "fizz"
+    nums[buzz & ~fizz] = "buzz"
+    nums[fizz & buzz] = "fizzbuzz"
 
-        elif i % 3 == 0:
-            outlist.append("fizz")
-
-        elif i % 5 == 0:
-            outlist.append("buzz")
-
-        else:
-            outlist.append(i)
-
-    return(outlist)
+    return nums.tolist()
